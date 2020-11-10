@@ -148,11 +148,11 @@ func toolSymlink(tool string, toolbin string, homebin string, version string) {
 			panic(err)
 		}
 	} else if os.IsNotExist(err) {
-		err := os.MkdirAll(symlink, 0755)
+		err := os.MkdirAll(homebin, 0755)
 		check(err)
-		os.Chmod(symlink, 0755)
 	}
-	os.Symlink(target, symlink)
+	err := os.Symlink(target, symlink)
+	check(err)
 	cmd := exec.Command(fmt.Sprintf("%v", tool), "--version")
 	cmd.Stdout = os.Stdout
 	cmd.Run()
@@ -183,7 +183,7 @@ func main() {
 	tool := prompt("Tool Select", []string{"Terraform", "Packer", "Vault"})
 	tool = strings.ToLower(tool)
 	toolbin := home + "/hc-swap/" + tool + "-versions/"
-	homebin := home + "/hc-swap/bin/"
+	homebin := "/usr/local/bin"
 
 	files, err := ioutil.ReadDir(toolbin)
 	if os.IsNotExist(err) {
@@ -195,8 +195,6 @@ func main() {
 		version := prompt("Select version to install:", toolLatest)
 		toolDownload(tool, toolbin, []string{version})
 		toolSymlink(tool, toolbin, homebin, version)
-		fmt.Println("\n\n!!! This is the first time you've used hc-swap !!!")
-		fmt.Printf("!!! Be sure to add %v to your $PATH !!!\n\n", homebin)
 	} else {
 		versions := []string{}
 		for _, f := range files {
