@@ -28,6 +28,6 @@ This app has been designed and used primarily on *nix systems, as a result there
 
 This app creates and houses all of it's content within a directory named `hc-swap` located directly within your home directory.
 
-Symlinks to each of the applications can be found under `hc-swap/bin` and all downloaded application versions can be located within their respective `hcswap/*-versions` directories.
+Symlinks to each of the applications can be found under `/usr/local/bin` and all downloaded application versions can be located within their respective `~/hcswap/*-versions` directories.
 
 Should you run into issues, you can cleanup the symlinks, version directories, or the entire `hc-swap` directory altogether and the next execution should rebuild everything cleanly.
